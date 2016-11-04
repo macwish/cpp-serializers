@@ -1,8 +1,8 @@
 library(ggplot2)
 
-names.size <- c("thrift-binary", "thrift-compact", "protobuf", "boost", "msgpack", "cereal", "avro", "capnproto", "flatbuffers")
+names.size <- c("thrift-binary", "thrift-compact", "protobuf", "boost", "msgpack", "cereal", "avro", "flatbuffers")
 names.time <- c("thrift-binary", "thrift-compact", "protobuf", "boost", "msgpack", "cereal", "avro")
-names.time2 <- c("capnproto", "flatbuffers")
+names.time2 <- c("flatbuffers")
 # data from the 1000000 simulations
 # for t in thrift-binary thrift-compact protobuf boost msgpack cereal avro; do echo -n "$t: "; ./benchmark 1 $t | grep size | awk '{print $4}'; done
 size <- c(17017, 11597, 12571, 17470, 11902, 17416, 12288, 17768, 17632)

@@ -16,11 +16,11 @@
 #include "thrift/gen-cpp/test_types.h"
 #include "thrift/gen-cpp/test_constants.h"
 
-#include <capnp/message.h>
-#include <capnp/serialize.h>
+// #include <capnp/message.h>
+// #include <capnp/serialize.h>
 
 #include "protobuf/test.pb.h"
-#include "capnproto/test.capnp.h"
+// #include "capnproto/test.capnp.h"
 #include "boost/record.hpp"
 #include "msgpack/record.hpp"
 #include "cereal/record.hpp"
@@ -166,69 +166,69 @@ protobuf_serialization_test(size_t iterations)
     std::cout << "protobuf: time = " << duration << " milliseconds" << std::endl << std::endl;
 }
 
-void
-capnproto_serialization_test(size_t iterations)
-{
-    using namespace capnp_test;
+// void
+// capnproto_serialization_test(size_t iterations)
+// {
+//     using namespace capnp_test;
 
-    capnp::MallocMessageBuilder message;
-    Record::Builder r1 = message.getRoot<Record>();
+//     capnp::MallocMessageBuilder message;
+//     Record::Builder r1 = message.getRoot<Record>();
 
-    auto ids = r1.initIds(kIntegers.size());
-    for (size_t i = 0; i < kIntegers.size(); i++) {
-        ids.set(i, kIntegers[i]);
-    }
+//     auto ids = r1.initIds(kIntegers.size());
+//     for (size_t i = 0; i < kIntegers.size(); i++) {
+//         ids.set(i, kIntegers[i]);
+//     }
 
-    auto strings = r1.initStrings(kStringsCount);
-    for (size_t i = 0; i < kStringsCount; i++) {
-        strings.set(i, kStringValue);
-    }
+//     auto strings = r1.initStrings(kStringsCount);
+//     for (size_t i = 0; i < kStringsCount; i++) {
+//         strings.set(i, kStringValue);
+//     }
 
-    kj::ArrayPtr<const kj::ArrayPtr<const capnp::word>> serialized =
-        message.getSegmentsForOutput();
+//     kj::ArrayPtr<const kj::ArrayPtr<const capnp::word>> serialized =
+//         message.getSegmentsForOutput();
 
-    // check if we can deserialize back
-    capnp::SegmentArrayMessageReader reader(serialized);
-    Record::Reader r2 = reader.getRoot<Record>();
-    if (r2.getIds().size() != kIntegers.size()) {
-        throw std::logic_error("capnproto's case: deserialization failed");
-    }
+//     // check if we can deserialize back
+//     capnp::SegmentArrayMessageReader reader(serialized);
+//     Record::Reader r2 = reader.getRoot<Record>();
+//     if (r2.getIds().size() != kIntegers.size()) {
+//         throw std::logic_error("capnproto's case: deserialization failed");
+//     }
 
-    size_t size = 0;
-    for (auto segment: serialized) {
-      size += segment.asBytes().size();
-    }
+//     size_t size = 0;
+//     for (auto segment: serialized) {
+//       size += segment.asBytes().size();
+//     }
 
-    std::cout << "capnproto: version = " << CAPNP_VERSION << std::endl;
-    std::cout << "capnproto: size = " << size << " bytes" << std::endl;
+//     std::cout << "capnproto: version = " << CAPNP_VERSION << std::endl;
+//     std::cout << "capnproto: size = " << size << " bytes" << std::endl;
 
-    auto start = std::chrono::high_resolution_clock::now();
-    for (size_t i = 0; i < iterations; i++) {
-        capnp::MallocMessageBuilder message;
-        Record::Builder r1 = message.getRoot<Record>();
+//     auto start = std::chrono::high_resolution_clock::now();
+//     for (size_t i = 0; i < iterations; i++) {
+//         capnp::MallocMessageBuilder message;
+//         Record::Builder r1 = message.getRoot<Record>();
 
-        auto ids = r1.initIds(kIntegers.size());
-        for (size_t i = 0; i < kIntegers.size(); i++) {
-            ids.set(i, kIntegers[i]);
-        }
+//         auto ids = r1.initIds(kIntegers.size());
+//         for (size_t i = 0; i < kIntegers.size(); i++) {
+//             ids.set(i, kIntegers[i]);
+//         }
 
-        auto strings = r1.initStrings(kStringsCount);
-        for (size_t i = 0; i < kStringsCount; i++) {
-            strings.set(i, kStringValue);
-        }
+//         auto strings = r1.initStrings(kStringsCount);
+//         for (size_t i = 0; i < kStringsCount; i++) {
+//             strings.set(i, kStringValue);
+//         }
 
-        serialized = message.getSegmentsForOutput();
-        capnp::SegmentArrayMessageReader reader(serialized);
-        auto r2 = reader.getRoot<Record>();
+//         serialized = message.getSegmentsForOutput();
+//         capnp::SegmentArrayMessageReader reader(serialized);
+//         auto r2 = reader.getRoot<Record>();
 
-        (void)r2.getIds().size();
-        (void)r2.getStrings().size();
-    }
-    auto finish = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(finish - start).count();
+//         (void)r2.getIds().size();
+//         (void)r2.getStrings().size();
+//     }
+//     auto finish = std::chrono::high_resolution_clock::now();
+//     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(finish - start).count();
 
-    std::cout << "capnproto: time = " << duration << " milliseconds" << std::endl << std::endl;
-}
+//     std::cout << "capnproto: time = " << duration << " milliseconds" << std::endl << std::endl;
+// }
 
 void
 boost_serialization_test(size_t iterations)
@@ -520,9 +520,9 @@ main(int argc, char **argv)
             protobuf_serialization_test(iterations);
         }
 
-        if (names.empty() || names.find("capnproto") != names.end()) {
-            capnproto_serialization_test(iterations);
-        }
+        // if (names.empty() || names.find("capnproto") != names.end()) {
+        //     capnproto_serialization_test(iterations);
+        // }
 
         if (names.empty() || names.find("boost") != names.end()) {
             boost_serialization_test(iterations);

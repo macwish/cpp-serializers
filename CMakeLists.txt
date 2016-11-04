@@ -58,8 +58,8 @@ set(boost_PREFIX ${CMAKE_CURRENT_BINARY_DIR}/external/boost)
 ExternalProject_Add(
     boost
     PREFIX ${boost_PREFIX}
-    URL "http://netcologne.dl.sourceforge.net/project/boost/boost/1.59.0/boost_1_59_0.tar.gz"
-    URL_MD5 "51528a0e3b33d9e10aaa311d9eb451e3"
+    URL "http://netcologne.dl.sourceforge.net/project/boost/boost/1.62.0/boost_1_62_0.tar.gz"
+    ##URL_MD5 "51528a0e3b33d9e10aaa311d9eb451e3"
     CONFIGURE_COMMAND ${boost_PREFIX}/src/boost/bootstrap.sh --with-libraries=serialization,filesystem,system,program_options,iostreams --prefix=${boost_PREFIX}
     BUILD_COMMAND ./bjam link=static cxxflags='-fPIC'
     INSTALL_COMMAND ./bjam link=static install
@@ -79,8 +79,8 @@ ExternalProject_Add(
     thrift
     PREFIX ${thrift_PREFIX}
     DEPENDS boost
-    URL "http://www.eu.apache.org/dist/thrift/0.9.2/thrift-0.9.2.tar.gz"
-    URL_MD5 "89f63cc4d0100912f4a1f8a9dee63678"
+    URL "http://www.eu.apache.org/dist/thrift/0.9.3/thrift-0.9.3.tar.gz"
+    ##URL_MD5 "89f63cc4d0100912f4a1f8a9dee63678"
     CONFIGURE_COMMAND CXX=${CMAKE_CXX_COMPILER} CC=${CMAKE_C_COMPILER} ${thrift_PREFIX}/src/thrift/configure --prefix=${thrift_PREFIX} --libdir=${thrift_PREFIX}/lib --with-boost=${Boost_INCLUDE_DIRS} --enable-shared=no --with-libevent=no --with-c_glib=no --with-java=no --with-erlang=no --with-python=no --with-perl=no --with-php=no --with-php_extension=no --with-ruby=no --with-haskell=no --with-go=no --with-d=no --with-lua=no --with-qt4=no --with-nodejs=no --disable-tests
     BUILD_COMMAND $(MAKE)
     INSTALL_COMMAND $(MAKE) install
@@ -93,29 +93,12 @@ include_directories(${thrift_PREFIX}/include)
 set(THRIFT_LIBRARIES ${thrift_PREFIX}/lib/libthrift.a)
 set(THRIFT_GENERATOR ${thrift_PREFIX}/bin/thrift)
 
-set(msgpack_PREFIX ${CMAKE_CURRENT_BINARY_DIR}/external/msgpack)
-ExternalProject_Add(
-    msgpack
-    PREFIX ${msgpack_PREFIX}
-    URL "https://github.com/msgpack/msgpack-c/releases/download/cpp-1.1.0/msgpack-1.1.0.tar.gz"
-    URL_MD5 "ac41a64d6415fd184215825048bc4523"
-    CONFIGURE_COMMAND CXX=${CMAKE_CXX_COMPILER} CC=${CMAKE_C_COMPILER} ${msgpack_PREFIX}/src/msgpack/configure --prefix=${msgpack_PREFIX} --libdir=${msgpack_PREFIX}/lib --enable-shared=no --disable-debug
-    BUILD_COMMAND $(MAKE)
-    INSTALL_COMMAND $(MAKE) install
-    BUILD_IN_SOURCE 1
-    LOG_UPDATE ON
-    LOG_BUILD ON
-    LOG_INSTALL ON
-)
-include_directories(${msgpack_PREFIX}/include)
-set(MSGPACK_LIBRARIES ${msgpack_PREFIX}/lib/libmsgpack.a)
-
 set(protobuf_PREFIX ${CMAKE_CURRENT_BINARY_DIR}/external/protobuf)
 ExternalProject_Add(
     protobuf
     PREFIX ${protobuf_PREFIX}
-    URL "https://github.com/google/protobuf/releases/download/v2.6.0/protobuf-2.6.0.tar.bz2"
-    URL_MD5 "78253c509a055dab316a21e754cb278a"
+    URL "https://github.com/google/protobuf/releases/download/v3.1.0/protobuf-cpp-3.1.0.tar.gz"
+    ##URL_MD5 "78253c509a055dab316a21e754cb278a"
     CONFIGURE_COMMAND CXX=${CMAKE_CXX_COMPILER} CC=${CMAKE_C_COMPILER} ${protobuf_PREFIX}/src/protobuf/configure --prefix=${protobuf_PREFIX} --libdir=${protobuf_PREFIX}/lib --enable-shared=no
     BUILD_COMMAND $(MAKE)
     INSTALL_COMMAND $(MAKE) install
@@ -128,31 +111,13 @@ include_directories(${protobuf_PREFIX}/include)
 set(PROTOBUF_LIBRARIES ${protobuf_PREFIX}/lib/libprotobuf.a)
 set(PROTOBUF_GENERATOR ${protobuf_PREFIX}/bin/protoc)
 
-set(capnproto_PREFIX ${CMAKE_CURRENT_BINARY_DIR}/external/capnproto)
-ExternalProject_Add(
-    capnproto
-    PREFIX ${capnproto_PREFIX}
-    URL "https://github.com/sandstorm-io/capnproto/archive/v0.5.2.tar.gz"
-    URL_MD5 "99a0e06a2a2d8a937c222eb13a0c01ee"
-    CONFIGURE_COMMAND CXX=${CMAKE_CXX_COMPILER} CC=${CMAKE_C_COMPILER} cd ${capnproto_PREFIX}/src/capnproto/c++ && ${AUTORECONF} -i && cd - && ${capnproto_PREFIX}/src/capnproto/c++/configure --prefix=${capnproto_PREFIX} --libdir=${capnproto_PREFIX}/lib --enable-shared=no
-    BUILD_COMMAND $(MAKE)
-    INSTALL_COMMAND $(MAKE) install
-    BUILD_IN_SOURCE 1
-    LOG_UPDATE ON
-    LOG_BUILD ON
-    LOG_INSTALL ON
-)
-include_directories(${capnproto_PREFIX}/include)
-set(CAPNPROTO_LIBRARIES ${capnproto_PREFIX}/lib/libcapnp.a ${capnproto_PREFIX}/lib/libkj.a)
-set(CAPNPROTO_GENERATOR ${capnproto_PREFIX}/bin/capnp)
-set(CAPNPROTO_CPP_GENERATOR ${capnproto_PREFIX}/bin/capnpc-c++)
 
 set(cereal_PREFIX ${CMAKE_CURRENT_BINARY_DIR}/external/cereal)
 ExternalProject_Add(
     cereal
     PREFIX ${cereal_PREFIX}
     URL "https://github.com/USCiLab/cereal/archive/v1.1.2.tar.gz"
-    URL_MD5 "34d4ad174acbff005c36d4d10e48cbb9"
+    ##URL_MD5 "34d4ad174acbff005c36d4d10e48cbb9"
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ""
     INSTALL_COMMAND mkdir -p ${cereal_PREFIX}/include/ && cp -r ${cereal_PREFIX}/src/cereal/include/cereal ${cereal_PREFIX}/include/
@@ -164,8 +129,8 @@ ExternalProject_Add(
     avro
     DEPENDS boost
     PREFIX ${avro_PREFIX}
-    URL "http://www.eu.apache.org/dist/avro/avro-1.7.7/avro-src-1.7.7.tar.gz"
-    URL_MD5 "352d8ee65f1ce1b43599be16eca7f264"
+    URL "http://www.eu.apache.org/dist/avro/avro-1.8.1/avro-src-1.8.1.tar.gz"
+    ##URL_MD5 "352d8ee65f1ce1b43599be16eca7f264"
     CONFIGURE_COMMAND cmake -DBOOST_INCLUDEDIR=${boost_PREFIX}/include -DBOOST_LIBRARYDIR=${boost_PREFIX}/lib -DBoost_NO_SYSTEM_PATHS=ON -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=${avro_PREFIX} -DBUILD_SHARED_LIBS=OFF ${avro_PREFIX}/src/avro/lang/c++/
     # Due to some issues with using statically built boost libraries AND zlib in avro tests
     # build only necessary parts and install them in a very hackish way.
@@ -183,8 +148,8 @@ set(flatbuffers_PREFIX ${CMAKE_CURRENT_BINARY_DIR}/external/flatbuffers)
 ExternalProject_Add(
     flatbuffers
     PREFIX ${flatbuffers_PREFIX}
-    URL "https://github.com/google/flatbuffers/archive/v1.3.0.tar.gz"
-    URL_MD5 "86d13e8c4c19c2bbadff86c5435b2fca"
+    URL "https://github.com/google/flatbuffers/archive/v1.4.0.tar.gz"
+    ## URL_MD5 "03d5b0e6233362b0951f22374d36b553"
     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${flatbuffers_PREFIX} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
     LOG_UPDATE ON
     LOG_CONFIGURE ON
@@ -239,19 +204,6 @@ set_source_files_properties(
 )
 set(PROTOBUF_SERIALIZATION_SOURCES  ${cpp_serializers_SOURCE_DIR}/protobuf/test.pb.cc)
 
-add_custom_command(
-    DEPENDS ${cpp_serializers_SOURCE_DIR}/test.capnp
-    COMMAND ${CAPNPROTO_GENERATOR}
-    ARGS compile -I${cpp_serializers_SOURCE_DIR} --src-prefix=${cpp_serializers_SOURCE_DIR} -o${CAPNPROTO_CPP_GENERATOR}:${cpp_serializers_SOURCE_DIR}/capnproto ${cpp_serializers_SOURCE_DIR}/test.capnp
-    OUTPUT  "${cpp_serializers_SOURCE_DIR}/capnproto/test.capnp.c++"
-    COMMENT "Executing Cap'n Proto compiler"
-)
-set_source_files_properties(
-    ${cpp_serializers_SOURCE_DIR}/capnproto/test.capnp.c++
-    ${cpp_serializers_SOURCE_DIR}/capnproto/test.capnp.h
-    PROPERTIES GENERATED TRUE
-)
-set(CAPNPROTO_SERIALIZATION_SOURCES  ${cpp_serializers_SOURCE_DIR}/capnproto/test.capnp.c++)
 
 add_custom_command(
     DEPENDS ${cpp_serializers_SOURCE_DIR}/test.json
@@ -293,6 +245,6 @@ add_executable(
     ${AVRO_SERIALIZATION_SOURCES}
     ${FLATBUFFERS_SERIALIZATION_SOURCES}
 )
-add_dependencies(benchmark thrift msgpack protobuf capnproto boost cereal avro flatbuffers)
+add_dependencies(benchmark thrift protobuf boost cereal avro flatbuffers)
 target_link_libraries(benchmark ${LINKLIBS})
 set_target_properties(benchmark PROPERTIES COMPILE_FLAGS "-std=c++11")
